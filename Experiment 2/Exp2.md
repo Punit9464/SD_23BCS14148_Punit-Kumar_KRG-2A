@@ -58,7 +58,7 @@ HTTP RESPONSE:
 QUES -> what is multi term searching (MTS) Famous Question for Interview
 
 
-####  Streaming Service + Elastic Search + Watcher on DB (all happening through Pipeline - CDC Change Data Pipeline)
+####  Streaming Service + Elastic Search + Watcher on DB (all happening through Pipeline - CDC Change Data Capture Pipeline)
 1. If any request has to go to DB and any Change or search is made on DB -> A Watcher (other name -> Connector Service) will stream the changes to Streaming Service (in form of messages).
 2. This Streaming Migrates the changes to Elastic Service.
 3. This all is done through a pipeline known as CDC Pipeline
