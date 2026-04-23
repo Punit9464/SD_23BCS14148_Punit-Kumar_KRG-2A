@@ -51,10 +51,28 @@ async function initializeServices() {
     logger.info('Initializing Memcached client...');
     global.memcachedClient = initMemcachedClient();
     
+    // Check if Memcached is available (with timeout)
+    await new Promise((resolve) => {
+      const timeout = setTimeout(() => {
+        logger.warn('⚠️  Memcached connection timeout - using in-memory fallback');
+        resolve();
+      }, 2000);
+      
+      if (global.memcachedClient.ping) {
+        global.memcachedClient.ping(() => {
+          clearTimeout(timeout);
+          resolve();
+        });
+      } else {
+        clearTimeout(timeout);
+        resolve();
+      }
+    });
+    
     logger.info('Starting health check system...');
     startHealthCheck(BACKEND_SERVERS);
     
-    logger.info('All services initialized successfully');
+    logger.success('✅ All services initialized successfully');
   } catch (error) {
     logger.error('Failed to initialize services', error);
     process.exit(1);
